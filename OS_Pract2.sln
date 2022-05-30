@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EngLib", "EngLib\EngLib.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UkrLib", "UkrLib\UkrLib.vcxproj", "{1A36AF40-3380-4612-B9E8-55A02D938366}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ControlSum", "ControlSum\ControlSum.vcxproj", "{E197A094-49BB-49CD-AB4A-83D16B3BADF9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{1A36AF40-3380-4612-B9E8-55A02D938366}.Release|x64.Build.0 = Release|x64
 		{1A36AF40-3380-4612-B9E8-55A02D938366}.Release|x86.ActiveCfg = Release|Win32
 		{1A36AF40-3380-4612-B9E8-55A02D938366}.Release|x86.Build.0 = Release|Win32
+		{E197A094-49BB-49CD-AB4A-83D16B3BADF9}.Debug|x64.ActiveCfg = Debug|x64
+		{E197A094-49BB-49CD-AB4A-83D16B3BADF9}.Debug|x64.Build.0 = Debug|x64
+		{E197A094-49BB-49CD-AB4A-83D16B3BADF9}.Debug|x86.ActiveCfg = Debug|Win32
+		{E197A094-49BB-49CD-AB4A-83D16B3BADF9}.Debug|x86.Build.0 = Debug|Win32
+		{E197A094-49BB-49CD-AB4A-83D16B3BADF9}.Release|x64.ActiveCfg = Release|x64
+		{E197A094-49BB-49CD-AB4A-83D16B3BADF9}.Release|x64.Build.0 = Release|x64
+		{E197A094-49BB-49CD-AB4A-83D16B3BADF9}.Release|x86.ActiveCfg = Release|Win32
+		{E197A094-49BB-49CD-AB4A-83D16B3BADF9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
