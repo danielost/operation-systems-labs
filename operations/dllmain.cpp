@@ -19,10 +19,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         TCHAR* name = new TCHAR[256];
         GetModuleFileName(hModule, name, 256);
         std::ifstream file(name, std::ios::binary);
-        uint64_t real = checkSum(file);
+        uint64_t curr = checkSum(file);
         uint64_t written = readSum(file);
-        
-        if (real != written) {
+
+        if (curr != written) {
             std::cout << "ERROR! Check sums don't match." << std::endl;
             return FALSE;
         }

@@ -87,3 +87,5 @@ OPERATIONS_API uint64_t encryptMessage(uint64_t message, std::pair<uint64_t, uin
 OPERATIONS_API uint64_t decryptMessage(uint64_t message, std::pair<uint64_t, uint64_t> privateKey) {
     return powMod(message, privateKey.first, privateKey.second);
 }
+
+//Made by D(e/a)n

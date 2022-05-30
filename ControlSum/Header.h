@@ -35,13 +35,12 @@ void writeSum(char* path) {
     else {
         std::streamoff size = file.tellg();
         file.seekg(0, std::ios::beg);
-        char* x = new char[size];
-        int sz = size;
-        memset(x, 0, sizeof(x) + 1);
+        char* buffer = new char[size];
+        memset(buffer, 0, sizeof(buffer) + 1);
 
-        file.read(x, size);
+        file.read(buffer, size);
 
-        uint64_t crc = crc32(x, size);
+        uint64_t crc = crc32(buffer, size);
 
         file.seekg(0, std::ios::end);
         file.write((char*)&crc, sizeof(crc));
@@ -57,12 +56,12 @@ uint64_t checkSum(std::ifstream& file) {
         file.seekg(-(int)sizeof(uint64_t), std::ios::end);
         std::streamoff size = file.tellg();
         file.seekg(0, std::ios::beg);
-        char* buf = new char[size];
+        char* buffer = new char[size];
         uint64_t len = size;
-        memset(buf, 0, sizeof(buf) + 1);
-        file.read(buf, size);
+        memset(buffer, 0, sizeof(buffer) + 1);
+        file.read(buffer, size);
 
-        return crc32(buf, len);
+        return crc32(buffer, len);
     }
     file.close();
 }
@@ -75,8 +74,9 @@ uint64_t readSum(std::ifstream& file) {
     else {
         std::streamoff size = file.tellg();
         file.seekg(-(int)sizeof(uint64_t), file.end);
-        uint64_t x;
-        file.read((char*)&x, sizeof(x));
-        return x;
+        uint64_t checkSum;
+        file.read((char*)&checkSum, sizeof(checkSum));
+        return checkSum;
     }
 }
+//Made by D(e/a)n
