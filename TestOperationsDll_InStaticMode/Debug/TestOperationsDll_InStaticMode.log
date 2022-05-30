@@ -1,2 +1,6 @@
 ﻿  TestOperationsDll_InStaticMode.cpp
-  TestOperationsDll_InStaticMode.vcxproj -> C:\Users\Daniel\Dropbox\PC\Documents\BA_PZPI-20-5\2 course\4 Term\Operating Systems\Labs\lab3_ostapchenko_riabtsev\LabOS2\Debug\TestOperationsDll_InStaticMode.exe
+C:\Users\Daniel\Dropbox\PC\Documents\BA_PZPI-20-5\2 course\4 Term\Operating Systems\Labs\lab3\operation-systems-labs\ControlSum\Header.h(47,28): warning C4244: 'initializing': conversion from 'std::streamoff' to 'unsigned int', possible loss of data
+C:\Users\Daniel\Dropbox\PC\Documents\BA_PZPI-20-5\2 course\4 Term\Operating Systems\Labs\lab3\operation-systems-labs\ControlSum\Header.h(48,16): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\Users\Daniel\Dropbox\PC\Documents\BA_PZPI-20-5\2 course\4 Term\Operating Systems\Labs\lab3\operation-systems-labs\ControlSum\Header.h(69,30): warning C4244: 'initializing': conversion from 'std::streamoff' to 'unsigned int', possible loss of data
+C:\Users\Daniel\Dropbox\PC\Documents\BA_PZPI-20-5\2 course\4 Term\Operating Systems\Labs\lab3\operation-systems-labs\ControlSum\Header.h(77): warning C4715: 'checkSum': not all control paths return a value
+  TestOperationsDll_InStaticMode.vcxproj -> C:\Users\Daniel\Dropbox\PC\Documents\BA_PZPI-20-5\2 course\4 Term\Operating Systems\Labs\lab3\operation-systems-labs\Debug\TestOperationsDll_InStaticMode.exe

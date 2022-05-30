@@ -1,13 +1,13 @@
 ﻿#include <iostream>
 #include <Windows.h>
 #include <locale>
+#include "../ControlSum/Header.h"
 
 typedef std::pair<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>> (*getKeyPair)();
 typedef uint64_t (*encryptMessage)(uint64_t, std::pair<uint64_t, uint64_t>);
 typedef uint64_t (*decryptMessage)(uint64_t, std::pair<uint64_t, uint64_t>);
 
-int main()
-{
+int main() {
 	setlocale(LC_ALL, "Ukrainian");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
@@ -38,6 +38,9 @@ int main()
 		std::wcout << str << std::endl;
 	}
 	FreeLibrary(rs);
+
+	//we used this function once to write the check sum to the operations.dll for the first time
+	//writeSum((char*)"..\\Debug\\operations.dll");
 
 	HMODULE h = LoadLibrary(TEXT("operations.dll"));
 	if (h == 0) {
