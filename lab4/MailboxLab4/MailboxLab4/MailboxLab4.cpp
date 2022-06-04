@@ -1,14 +1,18 @@
 #include <iostream>
 #include <windows.h>
-#include <vector>
 #include <tchar.h>
+#include <vector>
 
 struct Mail {
-	uint32_t msgCount = 0;
 	LPCWSTR path;
 	HANDLE handle;
 	uint32_t maxSize;
 	
+	void setMessagesAmount(int amount) {
+		SetFilePointer(handle, 0, 0, 0);
+		WriteFile(handle, &amount, sizeof(int), 0, 0);
+	}
+
 	Mail(LPCWSTR path, uint32_t maxSize) {
 		this->path = path;
 		this->maxSize = maxSize;
@@ -19,8 +23,8 @@ struct Mail {
 			CREATE_ALWAYS, // recreating file
 			0,
 			0);
+		setMessagesAmount(10);
 	}
-
 };
 
 struct MailBox {
