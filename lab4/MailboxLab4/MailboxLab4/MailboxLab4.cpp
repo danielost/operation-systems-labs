@@ -15,6 +15,16 @@ struct Mail {
 	}
 };
 
+struct MailBox {
+	std::vector<Mail> mails;
+
+	Mail* addMail(PCTSTR path, int mailMaxSize) {
+		Mail mail = Mail(path, mailMaxSize);
+		mails.push_back(mail);
+		return &mail;
+	}
+};
+
 int main() {
-	Mail mail(_T("../"), 32);
+
 }
