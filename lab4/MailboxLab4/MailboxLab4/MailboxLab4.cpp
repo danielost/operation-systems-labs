@@ -18,6 +18,10 @@ struct Mail {
 		WriteFile(handle, &size, sizeof(int), 0, 0);
 	}
 
+	void setMessagesMaxSize(int size) {
+		SetFilePointer(handle, sizeof(int) * 2, 0, 0);
+		WriteFile(handle, &size, sizeof(int), 0, 0);
+	}
 
 	Mail(LPCWSTR path, uint32_t maxSize) {
 		this->path = path;
@@ -31,6 +35,7 @@ struct Mail {
 			0);
 		setMessagesAmount(0);
 		setMessagesSize(0);
+		setMessagesMaxSize(maxSize);
 	}
 };
 
