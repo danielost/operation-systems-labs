@@ -4,15 +4,23 @@
 #include <tchar.h>
 
 struct Mail {
-	size_t msgCount = 0;
+	uint32_t msgCount = 0;
 	LPCWSTR path;
-	HANDLE handler;
-	DWORD maxSize;
+	HANDLE handle;
+	uint32_t maxSize;
 	
-	Mail(LPCWSTR path, int maxSize) {
+	Mail(LPCWSTR path, uint32_t maxSize) {
 		this->path = path;
 		this->maxSize = maxSize;
+		handle = CreateFile(path, 
+			GENERIC_READ | GENERIC_WRITE, 
+			FILE_SHARE_READ, 
+			0, 
+			CREATE_ALWAYS, // recreating file
+			0,
+			0);
 	}
+
 };
 
 struct MailBox {
@@ -26,5 +34,6 @@ struct MailBox {
 };
 
 int main() {
+	Mail mail(L"../mails/mainmail.dendan", 1000);
 
 }
