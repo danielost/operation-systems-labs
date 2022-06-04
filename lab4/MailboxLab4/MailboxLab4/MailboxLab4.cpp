@@ -12,6 +12,12 @@ struct Mail {
 		SetFilePointer(handle, 0, 0, 0);
 		WriteFile(handle, &amount, sizeof(int), 0, 0);
 	}
+	
+	void setMessagesSize(int size) {
+		SetFilePointer(handle, sizeof(int), 0, 0);
+		WriteFile(handle, &size, sizeof(int), 0, 0);
+	}
+
 
 	Mail(LPCWSTR path, uint32_t maxSize) {
 		this->path = path;
@@ -23,7 +29,8 @@ struct Mail {
 			CREATE_ALWAYS, // recreating file
 			0,
 			0);
-		setMessagesAmount(10);
+		setMessagesAmount(0);
+		setMessagesSize(0);
 	}
 };
 
