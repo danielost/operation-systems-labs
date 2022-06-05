@@ -47,9 +47,17 @@ struct MailBox {
 		mails.push_back(mail);
 		return &mail;
 	}
+
+	Mail* retrieveMailByNumber(int mailNumber) {
+		return &mails[mailNumber - 1];
+	}
 };
 
 int main() {
-	Mail mail(L"../mails/mainmail.dendan", 1000);
+	MailBox mailBox;
 
+	Mail mainMail = *mailBox.addMail(L"../mails/main.dendan", 1000);
+	Mail secondaryMail = *mailBox.addMail(L"../mails/secondary.dendan", 1000);
+
+	Mail curr = *mailBox.retrieveMailByNumber(2);
 }
