@@ -123,12 +123,13 @@ void printMailActions() {
 	std::cout << "1. Add new message\n2. Read message\n3. Read message and delete\n4. Delete message\n5. Delete all messages" << std::endl;
 }
 
-wstring readMessage() {
+wstring readMessageFromConsole() {
 	wcout << "Enter a message (press Enter to finish):\n";
 	wstring msgStr;
 	getline(wcin >> ws, msgStr);
 	return msgStr;
 }
+
 
 
 int main() {
@@ -161,20 +162,18 @@ int main() {
 				}
 
 				if (n == 1) {
-					std::wstring msg = readMessage();
+					std::wstring msg = readMessageFromConsole();
 					LPCTSTR message = msg.c_str();
-					(*mailBox.retrieveMailByNumber(n)).addMessage(message);
-				}
-				else if (n == 2) {
+					bool result = (*mailBox.retrieveMailByNumber(n)).addMessage(message);
+					if (result) { std::cout << "Succesfully added new message :)"; }
+					else { std::cout << "Enable to add new message :("; }
+				} else if (n == 2) {
 
-				}
-				else if (n == 3) {
+				} else if (n == 3) {
 
-				}
-				else if (n == 4) {
+				} else if (n == 4) {
 
-				}
-				else if (n == 5) {
+				} else if (n == 5) {
 
 				}
 			}
