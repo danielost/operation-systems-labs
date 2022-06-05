@@ -82,6 +82,25 @@ void printMainMenu() {
 	std::cout << "1. Open existing mails;\n2. Create a new mail;\n3. Exit." << std::endl;
 }
 
+void createMail(MailBox mailBox) {
+	std::cout << "Enter the name for the mail: ";
+	std::wstring name;
+	std::wcin >> name;
+
+	std::cout << "Enter the max capacity for the mail: ";
+	int capacity;
+	std::cin >> capacity;
+	while (capacity < 20 || capacity > 10000) {
+		std::cout << "Invalid capacity. Enter new: ";
+		std::cin >> capacity;
+	}
+
+	std::wstring path = L"../mails/" + name + L".dendan";
+	Mail newMail = *mailBox.addMail(path.c_str(), 1000);
+
+	std::wcout << name << " mail has been created!" << std::endl;
+}
+
 int main() {
 	MailBox mailBox;
 
@@ -98,7 +117,7 @@ int main() {
 			mailBox.printMails();
 		}
 		else if (n == 2) {
-
+			createMail(mailBox);
 		}
 		else if (n == 3) {
 			break;
