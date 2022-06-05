@@ -4,10 +4,10 @@
 #include <vector>
 
 struct Mail {
-	LPCWSTR path;
+	LPCTSTR path;
 	HANDLE handle;
 	uint32_t maxSize;
-	
+	uint32_t currentEnd = 3;
 	void setMessagesAmount(int amount) {
 		SetFilePointer(handle, 0, 0, 0);
 		WriteFile(handle, &amount, sizeof(int), 0, 0);
@@ -40,6 +40,21 @@ struct Mail {
 		setMessagesAmount(0);
 		setMessagesSize(0);
 		setMessagesMaxSize(maxSize);
+	}
+
+	
+	bool addMessage(LPCTSTR message) {
+		uint32_t messageSize = _tcslen(message) * sizeof(TCHAR);
+		if (currentEnd + messageSize > maxSize) { return false; }
+		if (!SetFilePointer(handle, currentEnd * sizeof(int), 0, 0)) return false;
+		if (!WriteFile(handle, &messageSize, sizeof(int), 0, 0)) return false;
+
+		currentEnd++;
+		if (!SetFilePointer(handle, currentEnd * sizeof(int), 0, 0)) return false;
+		if (!WriteFile(handle, &message, messageSize, 0, 0)) return false;
+		currentEnd += messageSize;
+
+		return true;
 	}
 };
 
@@ -99,6 +114,8 @@ void printMailActions() {
 	std::cout << "1. Add new message\n2. Read message\n3. Read message and delete\n4. Delete message\n5. Delete all messages" << std::endl;
 }
 
+
+
 int main() {
 	MailBox mailBox;
 
@@ -129,18 +146,21 @@ int main() {
 				}
 
 				if (n == 1) {
+					std::wstring msg;
+					std::wcin >> msg;
+					LPCTSTR message = msg.c_str();
+					mailBox.mails[n-1].addMessage(message);
+				}
+				else if (n == 2) {
 
 				}
-				if (n == 2) {
+				else if (n == 3) {
 
 				}
-				if (n == 3) {
+				else if (n == 4) {
 
 				}
-				if (n == 4) {
-
-				}
-				if (n == 5) {
+				else if (n == 5) {
 
 				}
 			}
