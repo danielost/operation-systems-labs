@@ -46,10 +46,6 @@ struct Mail {
 struct MailBox {
 	std::vector<Mail> mails;
 
-	MailBox() {
-
-	}
-
 	Mail* addMail(PCTSTR path, int mailMaxSize) {
 		Mail mail = Mail(path, mailMaxSize);
 		mails.push_back(mail);
@@ -74,8 +70,6 @@ struct MailBox {
 			std::wcout << i + 1 << ") " << mails[i].getMailPath() << std::endl;
 		}
 	}
-
-
 };
 
 void printMainMenu() {
@@ -101,6 +95,10 @@ void createMail(MailBox mailBox) {
 	std::wcout << name << " mail has been created!" << std::endl;
 }
 
+void printMailActions() {
+	std::cout << "1. Add new message\n2. Read message\n3. Read message and delete\n4. Delete message\n5. Delete all messages" << std::endl;
+}
+
 int main() {
 	MailBox mailBox;
 
@@ -115,6 +113,38 @@ int main() {
 		if (n == 1) {
 			std::cout << "Choose a mail:" << std::endl;
 			mailBox.printMails();
+			int n;
+			std::cin >> n;
+			while (n <= 0 || n > mailBox.amountOfMails()) {
+				std::cout << "Invalid number! Enter new: ";
+				std::cin >> n;
+			}
+			std::wcout << "You've chosen " << mailBox.retrieveMailByNumber(n)->path << " mail." << std::endl;
+			while (true) {
+				printMailActions();
+				std::cin >> n;
+				while (n < 1 || n > 5) {
+					std::cout << "Invalid value. Enter new: " << std::endl;
+					std::cin >> n;
+				}
+
+				if (n == 1) {
+
+				}
+				if (n == 2) {
+
+				}
+				if (n == 3) {
+
+				}
+				if (n == 4) {
+
+				}
+				if (n == 5) {
+
+				}
+			}
+			
 		}
 		else if (n == 2) {
 			createMail(mailBox);
