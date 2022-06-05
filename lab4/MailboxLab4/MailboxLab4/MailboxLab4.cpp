@@ -23,7 +23,11 @@ struct Mail {
 		WriteFile(handle, &size, sizeof(int), 0, 0);
 	}
 
-	Mail(LPCWSTR path, uint32_t maxSize) {
+	LPCTSTR getMailPath() {
+		return path;//.substr(path.find("\\"));;
+	}
+
+	Mail(LPCTSTR path, uint32_t maxSize) {
 		this->path = path;
 		this->maxSize = maxSize;
 		handle = CreateFile(path, 
@@ -51,6 +55,22 @@ struct MailBox {
 	Mail* retrieveMailByNumber(int mailNumber) {
 		return &mails[mailNumber - 1];
 	}
+
+	int amountOfMails() {
+		return mails.size();
+	}
+
+	void printMails() {
+		if (amountOfMails() == 0) {
+			std::cout << "Your mailbox is empty." << std::endl;
+			return;
+		}
+		std::cout << "Your Mailbox (total: " << amountOfMails() << ")" << std::endl;
+		for (int i = 0; i < amountOfMails(); i++) {
+			//_tprintf(_T("%d) %s\n"), i + 1, mails[i].getMailPath());
+			std::wcout << i + 1 << ") " << mails[i].getMailPath() << std::endl;
+		}
+	}
 };
 
 int main() {
@@ -59,5 +79,5 @@ int main() {
 	Mail mainMail = *mailBox.addMail(L"../mails/main.dendan", 1000);
 	Mail secondaryMail = *mailBox.addMail(L"../mails/secondary.dendan", 1000);
 
-	Mail curr = *mailBox.retrieveMailByNumber(2);
+	mailBox.printMails();
 }
