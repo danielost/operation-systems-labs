@@ -11,7 +11,6 @@ struct Mail {
 	HANDLE handle;
 	uint32_t maxSize;
 	uint32_t currentEnd = 3;
-	uint32_t amountOfMessages = 0;
 
 	void setMessagesAmount(int amount) {
 		SetFilePointer(handle, 0, 0, 0);
@@ -28,6 +27,27 @@ struct Mail {
 		WriteFile(handle, &size, sizeof(int), 0, 0);
 	}
 
+	uint32_t readMessagesAmount() {
+		LPVOID buffer;
+		SetFilePointer(handle, 0, 0, 0);
+		ReadFile(handle, &buffer, sizeof(int), 0, 0);
+		return (int)buffer;
+	}
+
+	uint32_t readMessagesSize() {
+		LPVOID buffer;
+		SetFilePointer(handle, sizeof(int), 0, 0);
+		ReadFile(handle, &buffer, sizeof(int), 0, 0);
+		return (int)buffer;
+	}
+
+	uint32_t readMessagesMaxSize() {
+		LPVOID buffer;
+		SetFilePointer(handle, sizeof(int) * 2, 0, 0);
+		ReadFile(handle, &buffer, sizeof(int), 0, 0);
+		return (int)buffer;
+	}
+
 	LPCTSTR getMailPath() {
 		return path;//.substr(path.find("\\"));;
 	}
@@ -39,17 +59,18 @@ struct Mail {
 			GENERIC_READ | GENERIC_WRITE, 
 			FILE_SHARE_READ, 
 			0, 
-			OPEN_ALWAYS, // recreating file
+			CREATE_ALWAYS, // recreating file
 			0,
 			0);
 		setMessagesAmount(0);
-		setMessagesSize(0);
+		setMessagesSize(3);
 		setMessagesMaxSize(maxSize);
+		currentEnd = 3;
 	}
 
-	
 	bool addMessage(LPCTSTR message) {
 		uint32_t messageSize = _tcslen(message) * sizeof(TCHAR);
+		uint32_t currentEnd = readMessagesSize();
 		if (currentEnd + messageSize > maxSize) { return false; }
 		if (!SetFilePointer(handle, currentEnd * sizeof(int), 0, 0)) return false;
 		if (!WriteFile(handle, &messageSize, sizeof(int), 0, 0)) return false;
@@ -58,12 +79,32 @@ struct Mail {
 		if (!SetFilePointer(handle, currentEnd * sizeof(int), 0, 0)) return false;
 		if (!WriteFile(handle, &message, messageSize, 0, 0)) return false;
 		currentEnd += messageSize;
-
+		setMessagesSize(currentEnd);
+		uint32_t amountOfMessages = readMessagesAmount();
+		setMessagesAmount(amountOfMessages+1);
 		return true; 
 	}
 
-	bool readMessage(uint32_t index) {
+	bool readMessage(uint32_t index, LPTSTR& getMessage) {
+		cout << readMessagesAmount() << endl;
+		uint32_t amountOfMessages = readMessagesAmount();
+		cout << amountOfMessages;
 		if (index < 0 || index >= amountOfMessages) { return false;  }
+		//std::cout << "Weewewewewe\n";
+		uint32_t currentPointer = 3 * sizeof(int);
+		uint32_t currentMessageSize = 0;
+		for (int i = 0; i <= index && currentPointer < maxSize; i += 1) {
+			if (!SetFilePointer(handle, currentPointer, 0, 0)) return false;
+			if (!ReadFile(handle, &currentMessageSize, sizeof(int), 0, 0)) return false;
+			currentPointer += currentMessageSize;
+		}
+		currentPointer += sizeof(int);
+		currentPointer -= currentMessageSize;
+		if (!SetFilePointer(handle, currentPointer, 0, 0)) return false;
+		std::cout << "Set pointer\n";
+		if (!ReadFile(handle, getMessage, currentMessageSize, 0, 0)) return false;
+		//getMessage = msg;
+		return true;
 	}
 };
 
@@ -77,7 +118,7 @@ struct MailBox {
 	}
 
 	Mail* retrieveMailByNumber(int mailNumber) {
-		return &mails[mailNumber - 1];
+		return &mails[mailNumber-1];
 	}
 
 	int amountOfMails() {
@@ -130,19 +171,31 @@ wstring readMessageFromConsole() {
 	return msgStr;
 }
 
-void writeOperationResult(bool result) {
+void printOperationResult(bool result) {
 	if (result) { std::cout << "Succesfully performed operation :)\n"; }
 	else { std::cout << "Error occured while performing operation :(\n"; }
 }
 
 int main() {
-	MailBox mailBox;
+	Mail mail = Mail(L"../mails/main.dendan", 1000);
+	mail.addMessage(L"1");
+	mail.addMessage(L"1");
+	mail.addMessage(L"123");
+
+	cout << mail.readMessagesAmount()  << endl;
+	cout << mail.readMessagesMaxSize() << endl;
+	cout << mail.readMessagesSize() << endl;
+	
+	LPTSTR MESSAGE1;
+	mail.readMessage(0, MESSAGE1);
+	_tprintf(_T("Message #%d: \n%s\n"), 1, MESSAGE1);
+	return 0;
+	/*MailBox mailBox;
 
 	Mail mainMail = *mailBox.addMail(L"../mails/main.dendan", 1000);
 	Mail secondaryMail = *mailBox.addMail(L"../mails/secondary.dendan", 1000);
 
 	while (true) {
-		
 		printMainMenu();
 		int n;
 		std::cin >> n;
@@ -163,12 +216,22 @@ int main() {
 					std::cout << "Invalid value. Enter new: " << std::endl;
 					std::cin >> n;
 				}
+
 				if (n == 1) {
 					std::wstring msg = readMessageFromConsole();
 					LPCTSTR message = msg.c_str();
-					bool result = (*mailBox.retrieveMailByNumber(n)).addMessage(message);
-					writeOperationResult(result);					
+					bool result = mailBox.retrieveMailByNumber(n)->addMessage(message);
+					printOperationResult(result);					
 				} else if (n == 2) {
+					std::wstring msg;
+					uint32_t index;
+					std::cin >> index;
+					cout << mailBox.retrieveMailByNumber(n)->readMessagesAmount() << endl;
+					if (mailBox.retrieveMailByNumber(n)->readMessage(index, msg)) {
+						std::wcout << msg;
+					} else {
+						std::cout << "Error occured while reading the message\n";
+					}
 
 				} else if (n == 3) {
 
@@ -193,7 +256,8 @@ int main() {
 
 	}
 
-	std::cout << "Bye!" << std::endl;
+	*/
+	//std::cout << "Bye!" << std::endl;
 }
 
 
