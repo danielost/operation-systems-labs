@@ -120,7 +120,7 @@ void createMail(MailBox mailBox) {
 }
 
 void printMailActions() {
-	std::cout << "1. Add new message\n2. Read message\n3. Read message and delete\n4. Delete message\n5. Delete all messages" << std::endl;
+	std::cout << "1. Add new message\n2. Read message\n3. Read message and delete\n4. Delete message\n5. Delete all messages\n0. Go back." << std::endl;
 }
 
 wstring readMessageFromConsole() {
@@ -130,7 +130,10 @@ wstring readMessageFromConsole() {
 	return msgStr;
 }
 
-
+void writeOperationResult(bool result) {
+	if (result) { std::cout << "Succesfully performed operation :)\n"; }
+	else { std::cout << "Error occured while performing operation :(\n"; }
+}
 
 int main() {
 	MailBox mailBox;
@@ -156,17 +159,15 @@ int main() {
 			while (true) {
 				printMailActions();
 				std::cin >> n;
-				while (n < 1 || n > 5) {
+				while (n < 0 || n > 5) {
 					std::cout << "Invalid value. Enter new: " << std::endl;
 					std::cin >> n;
 				}
-
 				if (n == 1) {
 					std::wstring msg = readMessageFromConsole();
 					LPCTSTR message = msg.c_str();
 					bool result = (*mailBox.retrieveMailByNumber(n)).addMessage(message);
-					if (result) { std::cout << "Succesfully added new message :)"; }
-					else { std::cout << "Enable to add new message :("; }
+					writeOperationResult(result);					
 				} else if (n == 2) {
 
 				} else if (n == 3) {
@@ -175,7 +176,7 @@ int main() {
 
 				} else if (n == 5) {
 
-				}
+				} else { break; }
 			}
 			
 		}
