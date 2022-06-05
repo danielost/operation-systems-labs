@@ -34,7 +34,7 @@ struct Mail {
 			GENERIC_READ | GENERIC_WRITE, 
 			FILE_SHARE_READ, 
 			0, 
-			CREATE_ALWAYS, // recreating file
+			OPEN_ALWAYS, // recreating file
 			0,
 			0);
 		setMessagesAmount(0);
@@ -45,6 +45,10 @@ struct Mail {
 
 struct MailBox {
 	std::vector<Mail> mails;
+
+	MailBox() {
+
+	}
 
 	Mail* addMail(PCTSTR path, int mailMaxSize) {
 		Mail mail = Mail(path, mailMaxSize);
@@ -67,11 +71,16 @@ struct MailBox {
 		}
 		std::cout << "Your Mailbox (total: " << amountOfMails() << ")" << std::endl;
 		for (int i = 0; i < amountOfMails(); i++) {
-			//_tprintf(_T("%d) %s\n"), i + 1, mails[i].getMailPath());
 			std::wcout << i + 1 << ") " << mails[i].getMailPath() << std::endl;
 		}
 	}
+
+
 };
+
+void printMainMenu() {
+	std::cout << "1. Open existing mails;\n2. Create a new mail;\n3. Exit." << std::endl;
+}
 
 int main() {
 	MailBox mailBox;
@@ -79,5 +88,29 @@ int main() {
 	Mail mainMail = *mailBox.addMail(L"../mails/main.dendan", 1000);
 	Mail secondaryMail = *mailBox.addMail(L"../mails/secondary.dendan", 1000);
 
-	mailBox.printMails();
+	while (true) {
+		
+		printMainMenu();
+		int n;
+		std::cin >> n;
+		if (n == 1) {
+			std::cout << "Choose a mail:" << std::endl;
+			mailBox.printMails();
+		}
+		else if (n == 2) {
+
+		}
+		else if (n == 3) {
+			break;
+		}
+		else {
+			std::cout << "Invalid value";
+			continue;
+		}		
+
+	}
+
+	std::cout << "Bye!" << std::endl;
 }
+
+
