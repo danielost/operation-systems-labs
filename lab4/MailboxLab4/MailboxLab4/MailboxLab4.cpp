@@ -2,12 +2,17 @@
 #include <windows.h>
 #include <tchar.h>
 #include <vector>
+#include <string>
+
+using namespace std;
 
 struct Mail {
 	LPCTSTR path;
 	HANDLE handle;
 	uint32_t maxSize;
 	uint32_t currentEnd = 3;
+	uint32_t amountOfMessages = 0;
+
 	void setMessagesAmount(int amount) {
 		SetFilePointer(handle, 0, 0, 0);
 		WriteFile(handle, &amount, sizeof(int), 0, 0);
@@ -54,7 +59,11 @@ struct Mail {
 		if (!WriteFile(handle, &message, messageSize, 0, 0)) return false;
 		currentEnd += messageSize;
 
-		return true;
+		return true; 
+	}
+
+	bool readMessage(uint32_t index) {
+		if (index < 0 || index >= amountOfMessages) { return false;  }
 	}
 };
 
@@ -114,6 +123,12 @@ void printMailActions() {
 	std::cout << "1. Add new message\n2. Read message\n3. Read message and delete\n4. Delete message\n5. Delete all messages" << std::endl;
 }
 
+wstring readMessage() {
+	wcout << "Enter a message (press Enter to finish):\n";
+	wstring msgStr;
+	getline(wcin >> ws, msgStr);
+	return msgStr;
+}
 
 
 int main() {
@@ -146,10 +161,9 @@ int main() {
 				}
 
 				if (n == 1) {
-					std::wstring msg;
-					std::wcin >> msg;
+					std::wstring msg = readMessage();
 					LPCTSTR message = msg.c_str();
-					mailBox.mails[n-1].addMessage(message);
+					(*mailBox.retrieveMailByNumber(n)).addMessage(message);
 				}
 				else if (n == 2) {
 
